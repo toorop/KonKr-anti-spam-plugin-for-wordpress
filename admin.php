@@ -11,7 +11,7 @@ function konkr_admin_init() {
 
         function konkr_version_warning() {
             echo "
-            <div id='konkr-warning' class='updated fade'><p><strong>" . sprintf(__('Konkr %s requires WordPress 3.0 or higher.'), KONKR_VERSION) . "</strong> " . sprintf(__('Please <a href="%s">upgrade WordPress</a> to a current version, or <a href="%s">downgrade to version 2.4 of the Konkr plugin</a>.'), 'http://codex.wordpress.org/Upgrading_WordPress', 'http://wordpress.org/extend/plugins/konkr/download/') . "</p></div>
+            <div id='konkr-warning' class='updated fade'><p><strong>" . sprintf(__('Konkr %s requires WordPress 3.0 or higher.'), KONKR_VERSION) . "</strong> " . sprintf(__('Please <a href="%s">upgrade WordPress</a> to a current version</a>.'), 'http://codex.wordpress.org/Upgrading_WordPress') . "</p></div>
             ";
         }
 
