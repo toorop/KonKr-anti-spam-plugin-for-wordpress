@@ -85,7 +85,7 @@ function konkr_conf() {
         if (empty($key)) {
             $key_status = 'empty';
             $ms[] = 'new_key_empty';
-            delete_option('wordpress_api_key');
+            delete_option('konkr_api_key');
         } elseif (empty($home_url['host'])) {
             $key_status = 'empty';
             $ms[] = 'bad_home_url';
@@ -94,7 +94,7 @@ function konkr_conf() {
         }
 
         if ($key_status == 'valid') {
-            update_option('wordpress_api_key', $key);
+            update_option('konkr_api_key', $key);
             $ms[] = 'new_key_valid';
         } else if ($key_status == 'invalid') {
             $ms[] = 'new_key_invalid';
@@ -116,7 +116,7 @@ function konkr_conf() {
     }
 
     if (empty($key_status) || $key_status != 'valid') {
-        $key = get_option('wordpress_api_key');
+        $key = get_option('konkr_api_key');
         if (empty($key)) {
             if (empty($key_status) || $key_status != 'failed') {
                 if (konkr_verify_key('1234567890ab') == 'failed')
@@ -131,7 +131,7 @@ function konkr_conf() {
         if ($key_status == 'valid') {
             $ms[] = 'key_valid';
         } else if ($key_status == 'invalid') {
-            delete_option('wordpress_api_key');
+            delete_option('konkr_api_key');
             $ms[] = 'key_empty';
         } else if (!empty($key) && $key_status == 'failed') {
             $ms[] = 'key_failed';
@@ -165,7 +165,7 @@ function konkr_conf() {
                     <?php foreach ($ms as $m) : ?>
                         <p style="padding: .5em; background-color: #<?php echo $messages[$m]['color']; ?>; color: #fff; font-weight: bold;"><?php echo $messages[$m]['text']; ?></p>
                     <?php endforeach; ?>
-                    <p><input id="key" name="key" type="text" size="15" maxlength="12" value="<?php echo get_option('wordpress_api_key'); ?>" style="font-family: 'Courier New', Courier, mono; font-size: 1.5em;" /> (<?php _e('<a href="http://konkr.com/get/?return=true" target="blank">What is this?</a>'); ?>)</p>
+                    <p><input id="key" name="key" type="text" size="15" maxlength="12" value="<?php echo get_option('konkr_api_key'); ?>" style="font-family: 'Courier New', Courier, mono; font-size: 1.5em;" /> (<?php _e('<a href="http://konkr.com/get/?return=true" target="blank">What is this?</a>'); ?>)</p>
                     <?php if (isset($invalid_key) && $invalid_key) { ?>
                         <h3><?php _e('Why might my key be invalid?'); ?></h3>
                         <p><?php _e('This can mean one of two things, either you copied the key wrong or that the plugin is unable to reach the Konkr servers, which is most often caused by an issue with your web host around firewalls or similar.'); ?></p>
@@ -306,7 +306,7 @@ add_action('activity_box_end', 'konkr_stats');
 
 function konkr_admin_warnings() {
     global $konkr_api_key;
-    if (!get_option('wordpress_api_key') && !$konkr_api_key && !isset($_POST['submit'])) {
+    if (!get_option('konkr_api_key') && !$konkr_api_key && !isset($_POST['submit'])) {
 
         function konkr_warning() {
             echo "

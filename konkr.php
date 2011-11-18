@@ -58,7 +58,7 @@ function konkr_init() {
     if ($konkr_api_key)
         $konkr_api_host = $konkr_api_key . '.api.konkr.com';
     else
-        $konkr_api_host = get_option('wordpress_api_key') . '.api.konkr.com';
+        $konkr_api_host = get_option('konkr_api_key') . '.api.konkr.com';
 
     $konkr_api_port = 80;
 }
@@ -69,7 +69,7 @@ function konkr_get_key() {
     global $konkr_api_key;
     if (!empty($konkr_api_key))
         return $konkr_api_key;
-    return get_option('wordpress_api_key');
+    return get_option('konkr_api_key');
 }
 
 function konkr_verify_key($key, $ip = null) {
