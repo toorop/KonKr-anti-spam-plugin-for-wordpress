@@ -72,7 +72,7 @@ function konkr_plugin_action_links($links, $file) {
 add_filter('plugin_action_links', 'konkr_plugin_action_links', 10, 2);
 
 function konkr_conf() {
-    global $konkr_nonce, $wpcom_api_key;
+    global $konkr_nonce, $konkr_api_key;
 
     if (isset($_POST['submit'])) {
         if (function_exists('current_user_can') && !current_user_can('manage_options'))
@@ -150,18 +150,18 @@ function konkr_conf() {
         'bad_home_url' => array('color' => '888', 'text' => sprintf(__('Your WordPress home URL %s is invalid.  Please fix the <a href="%s">home option</a>.'), esc_html(get_bloginfo('url')), admin_url('options.php#home'))),
     );
     ?>
-        <?php if (!empty($_POST['submit'])) : ?>
+    <?php if (!empty($_POST['submit'])) : ?>
         <div id="message" class="updated fade"><p><strong><?php _e('Options saved.') ?></strong></p></div>
-        <?php endif; ?>
+    <?php endif; ?>
     <div class="wrap">
         <h2><?php _e('Konkr Configuration'); ?></h2>
-                <?php if (isset($_GET['message']) && $_GET['message'] == 'success') { ?>
+        <?php if (isset($_GET['message']) && $_GET['message'] == 'success') { ?>
             <div class="updated below-h2" id="message"><p><?php _e('<strong>Sign up success!</strong> Please check your email for your Konkr API Key and enter it below.'); ?></p></div>
-    <?php } ?>
+        <?php } ?>
         <div class="narrow">
             <form action="" method="post" id="konkr-conf" style="margin: auto; width: 400px; ">
-                <?php if (!$wpcom_api_key) { ?>
-<p><?php printf(__('<a href="%1$s">Konkr Antispam</a> will reduce or even completely eliminate the comment and trackback spam you get on your site. If one does happen to get through, simply mark it as "spam" on the moderation screen and Konkr will learn from the mistakes. If you don\'t have an API key yet, you can get one at <a href="%2$s" target="blank">Konkr.com</a>.'), 'http://konkr.com/?return=true', 'http://konkr.com/get/?return=true'); ?></p><h3><label for="key"><?php _e('Konkr API Key'); ?></label></h3>
+                <?php if (!$konkr_api_key) { ?>
+                    <p><?php printf(__('<a href="%1$s">Konkr Antispam</a> will reduce or even completely eliminate the comment and trackback spam you get on your site. If one does happen to get through, simply mark it as "spam" on the moderation screen and Konkr will learn from the mistakes. If you don\'t have an API key yet, you can get one at <a href="%2$s" target="blank">Konkr.com</a>.'), 'http://konkr.com/?return=true', 'http://konkr.com/get/?return=true'); ?></p><h3><label for="key"><?php _e('Konkr API Key'); ?></label></h3>
                     <?php foreach ($ms as $m) : ?>
                         <p style="padding: .5em; background-color: #<?php echo $messages[$m]['color']; ?>; color: #fff; font-weight: bold;"><?php echo $messages[$m]['text']; ?></p>
                     <?php endforeach; ?>
@@ -169,13 +169,13 @@ function konkr_conf() {
                     <?php if (isset($invalid_key) && $invalid_key) { ?>
                         <h3><?php _e('Why might my key be invalid?'); ?></h3>
                         <p><?php _e('This can mean one of two things, either you copied the key wrong or that the plugin is unable to reach the Konkr servers, which is most often caused by an issue with your web host around firewalls or similar.'); ?></p>
-        <?php } ?>
-    <?php } ?>
-    <?php konkr_nonce_field($konkr_nonce) ?>
+                    <?php } ?>
+                <?php } ?>
+                <?php konkr_nonce_field($konkr_nonce) ?>
                 <p><label><input name="konkr_discard_month" id="konkr_discard_month" value="true" type="checkbox" <?php if (get_option('konkr_discard_month') == 'true')
-        echo ' checked="checked" '; ?> /> <?php _e('Auto-delete spam submitted on posts more than a month old.'); ?></label></p>
+                echo ' checked="checked" '; ?> /> <?php _e('Auto-delete spam submitted on posts more than a month old.'); ?></label></p>
                 <p><label><input name="konkr_show_user_comments_approved" id="konkr_show_user_comments_approved" value="true" type="checkbox" <?php if (get_option('konkr_show_user_comments_approved') == 'true')
-        echo ' checked="checked" '; ?> /> <?php _e('Show the number of comments you\'ve approved beside each comment author.'); ?></label></p>
+                                 echo ' checked="checked" '; ?> /> <?php _e('Show the number of comments you\'ve approved beside each comment author.'); ?></label></p>
                 <p class="submit"><input type="submit" name="submit" value="<?php _e('Update options &raquo;'); ?>" /></p>
             </form>
 
@@ -215,34 +215,34 @@ function konkr_conf() {
                         ?>
                         <p style="padding: .5em; background-color: #888; color: #fff; font-weight:bold;"><?php _e('Unable to find Konkr servers.'); ?></p>
                         <p><?php echo sprintf(__('A DNS problem or firewall is preventing all access from your web server to Konkr.com.  <strong>Konkr cannot work correctly until this is fixed.</strong>  Please contact your web host or firewall administrator and give them <a href="%s" target="_blank">this information about Konkr and firewalls</a>.'), 'http://blog.konkr.com/konkr-hosting-faq/'); ?></p>
-                                <?php
-                            }
-                        }
+                        <?php
+                    }
+                }
 
-                        if (!empty($servers)) {
-                            ?>
+                if (!empty($servers)) {
+                    ?>
                     <table style="width: 100%;">
                         <thead><th><?php _e('Konkr server'); ?></th><th><?php _e('Network Status'); ?></th></thead>
                         <tbody>
-                                <?php
-                                asort($servers);
-                                foreach ($servers as $ip => $status) {
-                                    $color = ( $status ? '#4AB915' : '#888');
-                                    ?>
+                            <?php
+                            asort($servers);
+                            foreach ($servers as $ip => $status) {
+                                $color = ( $status ? '#4AB915' : '#888');
+                                ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($ip); ?></td>
                                     <td style="padding: 0 .5em; font-weight:bold; color: #fff; background-color: <?php echo $color; ?>"><?php echo ($status ? __('Accessible') : __('Re-trying') ); ?></td>
 
-            <?php
-        }
-    }
-    ?>
+                                    <?php
+                                }
+                            }
+                            ?>
                     </tbody>
                 </table>
                 <p><?php if (get_option('konkr_connectivity_time'))
-        echo sprintf(__('Last checked %s ago.'), human_time_diff(get_option('konkr_connectivity_time'))); ?></p>
+                            echo sprintf(__('Last checked %s ago.'), human_time_diff(get_option('konkr_connectivity_time'))); ?></p>
                 <p class="submit"><input type="submit" name="check" value="<?php _e('Check network status &raquo;'); ?>" /></p>
-                </form>
+            </form>
 
         </div>
     </div>
@@ -258,9 +258,9 @@ function konkr_stats_script() {
     ?>
     <script type="text/javascript">
         function resizeIframe() {
-      
+          
             document.getElementById('konkr-stats-frame').style.height = "2500px";
-        
+            
         };
         function resizeIframeInit() {
             document.getElementById('konkr-stats-frame').onload = resizeIframe;
@@ -271,7 +271,7 @@ function konkr_stats_script() {
 }
 
 function konkr_stats_display() {
-    global $konkr_api_host, $konkr_api_port, $wpcom_api_key;
+    global $konkr_api_host, $konkr_api_port, $konkr_api_key;
     $blog = urlencode(get_bloginfo('url'));
 
     $url = 'http://';
@@ -305,8 +305,8 @@ function konkr_stats() {
 add_action('activity_box_end', 'konkr_stats');
 
 function konkr_admin_warnings() {
-    global $wpcom_api_key;
-    if (!get_option('wordpress_api_key') && !$wpcom_api_key && !isset($_POST['submit'])) {
+    global $konkr_api_key;
+    if (!get_option('wordpress_api_key') && !$konkr_api_key && !isset($_POST['submit'])) {
 
         function konkr_warning() {
             echo "
@@ -408,6 +408,7 @@ function konkr_comments_columns($columns) {
 
 #add_filter( 'manage_edit-comments_columns', 'konkr_comments_columns' );
 // Show stuff in the extra column
+
 function konkr_comment_column_row($column, $comment_id) {
     if ($column != 'konkr')
         return;
@@ -428,6 +429,7 @@ function konkr_comment_column_row($column, $comment_id) {
 #add_action( 'manage_comments_custom_column', 'konkr_comment_column_row', 10, 2 );
 // END FIXME
 // call out URLS in comments
+
 function konkr_text_add_link_callback($m) {
 
     // bare link?
@@ -742,7 +744,7 @@ add_action('wp_ajax_comment_author_reurl', 'konkr_add_comment_author_url');
 // Check connectivity between the WordPress blog and Konkr's servers.
 // Returns an associative array of server IP addresses, where the key is the IP address, and value is true (available) or false (unable to connect).
 function konkr_check_server_connectivity() {
-    global $konkr_api_host, $konkr_api_port, $wpcom_api_key;
+    global $konkr_api_host, $konkr_api_port, $konkr_api_key;
 
     $test_host = 'api.konkr.com';
 
@@ -785,8 +787,8 @@ function konkr_get_server_connectivity($cache_timeout = 86400) {
 // Returns true if server connectivity was OK at the last check, false if there was a problem that needs to be fixed.
 function konkr_server_connectivity_ok() {
     // skip the check on WPMU because the status page is hidden
-    global $wpcom_api_key;
-    if ($wpcom_api_key)
+    global $konkr_api_key;
+    if ($konkr_api_key)
         return true;
     $servers = konkr_get_server_connectivity();
     return!( empty($servers) || !count($servers) || count(array_filter($servers)) < count($servers) );

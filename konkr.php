@@ -33,10 +33,10 @@ define('KONKR_VERSION', '0.1');
 define('KONKR_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 /** If you hardcode a WP.com API key here, all key config screens will be hidden */
-if (defined('WPCOM_API_KEY'))
-    $wpcom_api_key = constant('WPCOM_API_KEY');
+if (defined('KONKR_API_KEY'))
+    $konkr_api_key = constant('KONKR_API_KEY');
 else
-    $wpcom_api_key = '';
+    $konkr_api_key = '';
 
 // Make sure we don't expose any info if called directly
 if (!function_exists('add_action')) {
@@ -53,10 +53,10 @@ if (is_admin())
     require_once dirname(__FILE__) . '/admin.php';
 
 function konkr_init() {
-    global $wpcom_api_key, $konkr_api_host, $konkr_api_port;
+    global $konkr_api_key, $konkr_api_host, $konkr_api_port;
 
-    if ($wpcom_api_key)
-        $konkr_api_host = $wpcom_api_key . '.api.konkr.com';
+    if ($konkr_api_key)
+        $konkr_api_host = $konkr_api_key . '.api.konkr.com';
     else
         $konkr_api_host = get_option('wordpress_api_key') . '.api.konkr.com';
 
@@ -66,17 +66,17 @@ function konkr_init() {
 add_action('init', 'konkr_init');
 
 function konkr_get_key() {
-    global $wpcom_api_key;
-    if (!empty($wpcom_api_key))
-        return $wpcom_api_key;
+    global $konkr_api_key;
+    if (!empty($konkr_api_key))
+        return $konkr_api_key;
     return get_option('wordpress_api_key');
 }
 
 function konkr_verify_key($key, $ip = null) {
-    global $konkr_api_host, $konkr_api_port, $wpcom_api_key;
+    global $konkr_api_host, $konkr_api_port, $konkr_api_key;
     $blog = urlencode(get_option('home'));
-    if ($wpcom_api_key)
-        $key = $wpcom_api_key;
+    if ($konkr_api_key)
+        $key = $konkr_api_key;
     $response = konkr_http_post("key=$key&blog=$blog", 'api.konkr.com', '/1.1/verify-key', $konkr_api_port, $ip);
     if (!is_array($response) || !isset($response[1]) || $response[1] != 'valid' && $response[1] != 'invalid')
         return 'failed';
