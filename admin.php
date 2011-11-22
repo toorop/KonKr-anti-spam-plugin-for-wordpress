@@ -1,6 +1,7 @@
 <?php
 add_action('admin_menu', 'konkr_config_page');
-add_action('admin_menu', 'konkr_stats_page');
+# Todo
+//add_action('admin_menu', 'konkr_stats_page');
 konkr_admin_warnings();
 
 function konkr_admin_init() {
